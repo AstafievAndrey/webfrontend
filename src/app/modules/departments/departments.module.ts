@@ -17,7 +17,4 @@ import { DepartmentsDetailComponent } from './components/departments-detail/depa
   ]
 })
 export class DepartmentsModule {
-  getDepartments(): Observable<Department[]> {
-    return ;
-  }
 }

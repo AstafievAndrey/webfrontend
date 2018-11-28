@@ -1,3 +1,56 @@
-<p>
-  departments-detail works!
-</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title *ngIf="department">{{department.name}}</mat-card-title>
+  </mat-card-header>
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Фильтр">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="view">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row" class="align-right">
+          <a mat-button routerLink="{{row.id}}/employees">
+            просмотр
+          </a>
+        </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ид </th>
+        <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="surname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Фамилия </th>
+          <td mat-cell *matCellDef="let row"> {{row.surname}} </td>
+        </ng-container>
+  
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Имя </th>
+        <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Отчество </th>
+          <td mat-cell *matCellDef="let row"> {{row.lastname}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="birthday">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Дата рождения </th>
+          <td mat-cell *matCellDef="let row"> {{row.birthday | date:'dd.MM.yyyy'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Телефон </th>
+          <td mat-cell *matCellDef="let row"> {{row.phone}} </td>
+        </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+</mat-card>

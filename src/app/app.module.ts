@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './core/libs/material/material.module';
 import { ToolbarComponent } from './core/components/toolbar/toolbar.component';
 import { ContainerComponent } from './core/components/container/container.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { ContainerComponent } from './core/components/container/container.compon
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
