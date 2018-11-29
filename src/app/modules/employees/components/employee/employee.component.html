@@ -1,3 +1,39 @@
-<p>
-  employee works!
-</p>
+<mat-card>
+  <mat-card-title>Информация о сотруднике</mat-card-title>
+  <mat-card-content>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+
+      <mat-form-field>
+        <input matInput placeholder="Фамилия" formControlName="surname" type="text" required>
+        <mat-error *ngIf="form.get('surname').invalid">не валидное значение</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput  placeholder="Имя" formControlName="name"  type="text" required>
+        <mat-error *ngIf="form.get('name').invalid">не валидное значение</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Отчество" formControlName="lastname"  type="text" required>
+        <mat-error *ngIf="form.get('lastname').invalid">не валидное значение</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+          <span matPrefix>+ &nbsp;</span>
+          <input matInput formControlName="phone" placeholder="Телефон">
+          <mat-error *ngIf="form.get('phone').invalid">не валидное значение</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput formControlName="birthday" [matDatepicker]="picker" placeholder="День рождения">
+        <mat-datepicker #picker disabled="false"></mat-datepicker>
+      </mat-form-field>
+      <button mat-raised-button (click)="picker.open()">выбрать</button>
+
+      <br>
+
+      <button mat-raised-button type="submit" [disabled]="(!form.dirty || !form.valid)">сохранить</button>
+
+    </form>
+  </mat-card-content>
+</mat-card>

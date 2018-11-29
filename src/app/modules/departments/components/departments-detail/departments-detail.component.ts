@@ -2,8 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Department } from '../../services/department';
 import { DepartmentsService } from '../../services/departments.service';
-import { of } from 'rxjs';
-import { EmployessService } from 'src/app/modules/employees/services/employees.service';
+import { EmployeesService } from 'src/app/modules/employees/services/employees.service';
 import { Employees } from 'src/app/modules/employees/services/employees';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 
@@ -22,7 +21,7 @@ export class DepartmentsDetailComponent implements OnInit {
 
   constructor( private route: ActivatedRoute,
     private departmentsService: DepartmentsService,
-    private employeesService: EmployessService
+    private employeesService: EmployeesService
   ) { }
 
   ngOnInit() {

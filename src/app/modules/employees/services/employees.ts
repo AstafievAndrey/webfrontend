@@ -6,5 +6,5 @@ export class Employees {
   birthday: Date;
   phone: number;
   department_id: number;
-  photo: Blob;
+  file_id: Blob;
 }
