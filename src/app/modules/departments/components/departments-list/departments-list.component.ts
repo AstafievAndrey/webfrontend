@@ -20,8 +20,6 @@ export class DepartmentsListComponent implements OnInit {
 
   ngOnInit() {
     this.getDepartments();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(filterValue: string) {
@@ -33,7 +31,13 @@ export class DepartmentsListComponent implements OnInit {
 
   getDepartments() {
     this.deparmentService.getDepartments()
-      .subscribe(departments => this.dataSource = new MatTableDataSource(departments));
+      .subscribe(
+        departments => {
+          this.dataSource = new MatTableDataSource(departments);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        }
+      );
   }
 
 }

@@ -26,8 +26,6 @@ export class DepartmentsDetailComponent implements OnInit {
 
   ngOnInit() {
     this.getDepartment();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(filterValue: string) {
@@ -42,11 +40,12 @@ export class DepartmentsDetailComponent implements OnInit {
     this.departmentsService.getDepartment(id)
       .subscribe(department => {
         this.department = department;
-        this.employeesService.getEmployessByDept(department.id)
-          .subscribe(employees => {
-            console.log(employees);
-            this.dataSource = new MatTableDataSource(employees);
-          });
       });
+    this.employeesService.getEmployessByDept(id)
+        .subscribe(employees => {
+          this.dataSource = new MatTableDataSource(employees);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        });
   }
 }

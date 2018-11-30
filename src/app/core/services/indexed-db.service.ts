@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DEPARTMENTS } from '../../modules/departments/services/mock-departments';
 import { EMPLOYEES } from '../../modules/employees/services/mock-employess';
-import { from } from 'rxjs';
+import { from, Subject, Observable } from 'rxjs';
 
 const DB_NAME = 'MyDb';
 const DB_VERSION = 1;
@@ -10,8 +10,9 @@ const DB_VERSION = 1;
   providedIn: 'root'
 })
 export class IndexedDbService {
+  dbSubject = new Subject<IDBDatabase>();
+  db: IDBDatabase = null;
   request: IDBOpenDBRequest;
-  db: IDBDatabase;
   initDb: boolean;
 
   constructor() {
@@ -22,6 +23,7 @@ export class IndexedDbService {
   init() {
     this.request.onsuccess = (e: any) => {
       this.db = e.target.result;
+      this.dbSubject.next(this.db);
       this.initDb = true;
       console.log(`openDb ${DB_NAME} version ${DB_VERSION}`, this.db);
     };
@@ -34,10 +36,45 @@ export class IndexedDbService {
     };
   }
 
-  getObjectStore(store_name: string) {
-    if (this.db) {
-      return this.db.transaction(store_name).objectStore(store_name);
+  getDb(): any {
+    if (this.db === null) {
+      return this.dbSubject.asObservable();
+    } else {
+      return this.db;
     }
+  }
+
+  getAll(db: IDBDatabase, name: string, observer): void {
+    const result = [];
+    const objectStore = db.transaction(name).objectStore(name);
+    objectStore.openCursor().onsuccess = () => {
+      const cursor = event.target['result'];
+      if (cursor) {
+        result.push(cursor.value);
+        cursor.continue();
+      } else {
+        observer.next(result);
+        observer.unsubscribe();
+      }
+    };
+  }
+
+  get(id: number|string, db: IDBDatabase, name: string, observer): void {
+    const objectStore = db.transaction(name).objectStore(name);
+    const request = objectStore.get(id);
+    request.onsuccess = () => {
+      observer.next(request.result);
+      observer.unsubscribe();
+    };
+  }
+
+  getIndexAll(id: number|string, db: IDBDatabase, name: string, indexName: string, observer): void {
+    const objectStore = db.transaction(name).objectStore(name);
+    const index = objectStore.index(indexName);
+    index.getAll(id).onsuccess = (event) => {
+      observer.next(event.target['result']);
+      observer.unsubscribe();
+    };
   }
 
   onUpgrade(e: any): void {
